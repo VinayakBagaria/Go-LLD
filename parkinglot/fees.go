@@ -28,6 +28,6 @@ func NewVehicleRateFeeStrategy() Fee {
 	}}
 }
 
-func (flatFee *VehicleRateFeeStrategy) CalculateFee(parkingTicket *ParkingTicket) int {
-	return parkingTicket.GetElapsedTime() * int(parkingTicket.GetVehicle().GetType())
+func (vehicleFee *VehicleRateFeeStrategy) CalculateFee(parkingTicket *ParkingTicket) int {
+	return parkingTicket.GetElapsedTime() * vehicleFee.rateCard[parkingTicket.GetVehicle().GetType()]
 }

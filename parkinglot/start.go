@@ -8,7 +8,7 @@ import (
 
 func DoWork() {
 	parkingLot := GetParkingLot()
-	parkingLot.SetFeeStrategy(NewFlatRateFeeStrategy())
+	parkingLot.SetFeeStrategy(NewVehicleRateFeeStrategy())
 	parkingLot.AddLevel(NewLevel(1, 10))
 	// parkingLot.AddLevel(NewLevel(2, 8))
 
@@ -24,6 +24,10 @@ func DoWork() {
 
 	time.Sleep(1 * time.Second)
 	fees, _ := parkingLot.UnParkVehicle(bike)
+	fmt.Println(fees)
+
+	time.Sleep(1 * time.Second)
+	fees, _ = parkingLot.UnParkVehicle(car)
 	fmt.Println(fees)
 
 	// parkingLot.GetAvailability()
