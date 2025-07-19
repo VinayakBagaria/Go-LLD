@@ -1,8 +1,14 @@
 // https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/parking-lot.md
 package parkinglot
 
+import (
+	"fmt"
+	"time"
+)
+
 func DoWork() {
 	parkingLot := GetParkingLot()
+	parkingLot.SetFeeStrategy(NewFlatRateFeeStrategy())
 	parkingLot.AddLevel(NewLevel(1, 10))
 	// parkingLot.AddLevel(NewLevel(2, 8))
 
@@ -10,13 +16,15 @@ func DoWork() {
 	bike := NewBike()
 	truck := NewTruck()
 
-	parkingLot.ParkVehicle(car)
-	parkingLot.ParkVehicle(bike)
-	parkingLot.ParkVehicle(truck)
+	fmt.Printf("Ticket ID: %d\n", parkingLot.ParkVehicle(car).GetTicketId())
+	fmt.Printf("Ticket ID: %d\n", parkingLot.ParkVehicle(bike).GetTicketId())
+	fmt.Printf("Ticket ID: %d\n", parkingLot.ParkVehicle(truck).GetTicketId())
 
-	parkingLot.GetAvailability()
+	// parkingLot.GetAvailability()
 
-	parkingLot.UnParkVehicle(bike)
+	time.Sleep(1 * time.Second)
+	fees, _ := parkingLot.UnParkVehicle(bike)
+	fmt.Println(fees)
 
-	parkingLot.GetAvailability()
+	// parkingLot.GetAvailability()
 }

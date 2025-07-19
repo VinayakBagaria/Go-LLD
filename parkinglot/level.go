@@ -28,14 +28,15 @@ func NewLevel(floor, numSpots int) *Level {
 	return level
 }
 
-func (level *Level) ParkVehicle(vehicle Vehicle) bool {
+func (level *Level) ParkVehicle(vehicle Vehicle) *ParkingTicket {
 	for _, spot := range level.parkingSpots {
 		if spot.ParkVehicle(vehicle) {
-			return true
+			parkingTicket := NewParkingTicket(vehicle, spot)
+			return parkingTicket
 		}
 	}
 
-	return false
+	return nil
 }
 
 func (level *Level) UnParkVehicle(vehicle Vehicle) bool {
