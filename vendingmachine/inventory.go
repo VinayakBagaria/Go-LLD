@@ -16,3 +16,7 @@ func (i *Inventory) IsAvailable(product *Product) bool {
 	qty, exists := i.products[product]
 	return exists && qty > 0
 }
+
+func (i *Inventory) ReduceStock(product *Product) {
+	i.products[product]--
+}

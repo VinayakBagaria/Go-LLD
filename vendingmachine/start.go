@@ -12,7 +12,7 @@ func DoWork() {
 	water := NewProduct("Water", 1.0)
 
 	// Add products to inventory
-	vm.inventory.AddProduct(coke, 5)
+	vm.inventory.AddProduct(coke, 1)
 	vm.inventory.AddProduct(bread, 3)
 	vm.inventory.AddProduct(water, 2)
 
@@ -47,4 +47,7 @@ func DoWork() {
 
 	fmt.Println("Returning change")
 	vm.ReturnChange()
+
+	fmt.Println("\n\nWith no product")
+	vm.SelectProduct(coke)
 }

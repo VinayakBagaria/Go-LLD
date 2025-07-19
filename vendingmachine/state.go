@@ -45,16 +45,7 @@ func (s *ReadyState) InsertNote(note Note) {
 	s.checkPaymentStatus()
 }
 func (s *ReadyState) DispenseProduct() { fmt.Println("Please make payment first.") }
-func (s *ReadyState) ReturnChange() {
-	change := s.vm.payment - s.vm.selectedProduct.price
-	if change > 0 {
-		s.vm.ResetPayment()
-		fmt.Printf("Change returned: %.2f\n", change)
-	} else {
-		fmt.Println("No change")
-	}
-	s.vm.SetState(s.vm.idleState)
-}
+func (s *ReadyState) ReturnChange()    { fmt.Println("Change returned after payment") }
 
 func (s *ReadyState) checkPaymentStatus() {
 	if s.vm.payment >= s.vm.selectedProduct.price {
@@ -69,8 +60,11 @@ type DispenseState struct {
 func (s *DispenseState) SelectProduct(product *Product) { fmt.Println("Product already selected.") }
 func (s *DispenseState) InsertCoin(c Coin)              { fmt.Println("Please collect the product.") }
 func (s *DispenseState) InsertNote(n Note)              { fmt.Println("Please collect the product.") }
-func (s *DispenseState) DispenseProduct()               { s.vm.SetState(s.vm.returnChangeState) }
-func (s *DispenseState) ReturnChange()                  { fmt.Println("Please collect the product first.") }
+func (s *DispenseState) DispenseProduct() {
+	s.vm.SetState(s.vm.returnChangeState)
+	s.vm.inventory.ReduceStock(s.vm.selectedProduct)
+}
+func (s *DispenseState) ReturnChange() { fmt.Println("Please collect the product first.") }
 
 type ReturnChangeState struct {
 	vm *VendingMachine
@@ -92,11 +86,11 @@ func (s *ReturnChangeState) DispenseProduct() {
 func (s *ReturnChangeState) ReturnChange() {
 	change := s.vm.payment - s.vm.selectedProduct.price
 	if change > 0 {
-		s.vm.ResetPayment()
 		fmt.Printf("Change returned: %.2f\n", change)
 	} else {
 		fmt.Println("No change")
 	}
+	s.vm.ResetPayment()
 	s.vm.ResetSelectedProduct()
 	s.vm.SetState(s.vm.idleState)
 }
