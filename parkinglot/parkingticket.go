@@ -28,3 +28,7 @@ func (ticket *ParkingTicket) GetElapsedTime() int {
 func (ticket *ParkingTicket) GetTicketId() int {
 	return ticket.ticketId
 }
+
+func (ticket *ParkingTicket) GetVehicle() Vehicle {
+	return ticket.vehicle
+}
