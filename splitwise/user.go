@@ -6,5 +6,8 @@ type User struct {
 }
 
 func NewUser(id, name string) *User {
-	return &User{ID: id, Name: name}
+	return &User{
+		ID:   id,
+		Name: name,
+	}
 }

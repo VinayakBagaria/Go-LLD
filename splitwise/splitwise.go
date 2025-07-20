@@ -1,14 +1,16 @@
 package splitwise
 
 type SplitWise struct {
-	users  map[string]*User
-	groups map[string]*Group
+	users        map[string]*User
+	groups       map[string]*Group
+	balanceSheet *BalanceSheet
 }
 
 func NewSplitWise() *SplitWise {
 	return &SplitWise{
-		users:  make(map[string]*User),
-		groups: make(map[string]*Group),
+		users:        make(map[string]*User),
+		groups:       make(map[string]*Group),
+		balanceSheet: NewBalanceSheet(),
 	}
 }
 
@@ -27,13 +29,15 @@ func (s *SplitWise) AddExpense(groupId string, expense *Expense) {
 	}
 
 	group.AddExpense(expense)
+	expense.CalculateSplit()
+	expense.Print()
+	s.balanceSheet.UpdateBalances(expense)
 }
 
-func (s *SplitWise) SettleBalances(userID1, userID2 string) {
-	_, ok1 := s.users[userID1]
-	_, ok2 := s.users[userID2]
+func (s *SplitWise) SettleBalances(sender, receiver *User) {
+	s.balanceSheet.SettleBalances(sender, receiver)
+}
 
-	if !ok1 || !ok2 {
-		return
-	}
+func (s *SplitWise) PrintBalances() {
+	s.balanceSheet.PrintBalances()
 }
