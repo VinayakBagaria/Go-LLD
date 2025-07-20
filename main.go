@@ -2,10 +2,11 @@ package main
 
 import (
 	"go-lld/parkinglot"
+	"go-lld/splitwise"
 	"go-lld/vendingmachine"
 )
 
-const decision = "vendingMachine"
+const decision = "splitwise"
 
 func main() {
 	switch decision {
@@ -14,5 +15,8 @@ func main() {
 
 	case "vendingMachine":
 		vendingmachine.DoWork()
+
+	case "splitwise":
+		splitwise.DoWork()
 	}
 }
