@@ -2,7 +2,6 @@ package ridesharing
 
 import (
 	"fmt"
-	"math/rand"
 	"time"
 )
 
@@ -80,7 +79,7 @@ func (rs *RideService) CancelRide(ride *Ride) {
 
 func (rs *RideService) notifyDrivers(ride *Ride) {
 	for _, driver := range rs.drivers {
-		if driver.Status == Available && rs.calculateDistance(driver.Location, ride.Source) <= 5.0 {
+		if driver.Status == Available && driver.Location.CalculateDistance(ride.Source) <= 5.0 {
 			fmt.Printf("Notifying driver %s about ride request: %d\n", driver.Name, ride.ID)
 		}
 	}
@@ -117,21 +116,8 @@ func (rs *RideService) notifyPassenger(ride *Ride) {
 func (rs *RideService) calculateFare(ride *Ride) float64 {
 	baseFare := 2.0
 	perKmFare := 1.5
-	perMinuteFare := 0.25
-
-	distance := rs.calculateDistance(ride.Source, ride.Destination)
-	duration := rs.calculateDuration(ride.Source, ride.Destination)
-
-	return baseFare + (distance * perKmFare) + (duration * perMinuteFare)
-}
-
-func (rs *RideService) calculateDistance(source, destination *Location) float64 {
-	return rand.Float64()*20 + 1
-}
-
-func (rs *RideService) calculateDuration(source, destination *Location) float64 {
-	distance := rs.calculateDistance(source, destination)
-	return (distance / 30) * 60
+	distance := ride.Source.CalculateDistance(ride.Destination)
+	return baseFare + (distance * perKmFare)
 }
 
 func (rs *RideService) generateRideId() int {
