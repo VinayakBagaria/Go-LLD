@@ -1,13 +1,14 @@
 package main
 
 import (
+	"go-lld/moviebooking"
 	"go-lld/parkinglot"
 	"go-lld/ridesharing"
 	"go-lld/splitwise"
 	"go-lld/vendingmachine"
 )
 
-const decision = "rideSharing"
+const decision = "movieBooking"
 
 func main() {
 	switch decision {
@@ -22,5 +23,8 @@ func main() {
 
 	case "rideSharing":
 		ridesharing.DoWork()
+
+	case "movieBooking":
+		moviebooking.DoWork()
 	}
 }
